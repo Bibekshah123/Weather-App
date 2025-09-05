@@ -2,9 +2,17 @@ from django.shortcuts import render
 import requests
 from .models import City
 from .forms import *
+from dotenv import load_dotenv
+import os
 
 def index(request):
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=YOUR_APP_KEY'
+    
+    load_dotenv()
+    
+    api_key = os.getenv('OPENWEATHER_API_KEY')
+    if not api_key:
+        raise ValueError("API key not found. Please set OPENWEATHER_API_KEY in your environment or .env file.")
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={api_key}'
 
     cities = City.objects.all() #return all the cities in the database
     
@@ -16,6 +24,10 @@ def index(request):
     weather_data = []
 
     for city in cities:
+        response = requests.get(url.format(city))
+        if response.status_code == 404:
+            continue
+        city_weather = response.json()
 
         city_weather = requests.get(url.format(city)).json() #request the API data and convert the JSON to Python data types
 
