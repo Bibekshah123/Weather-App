@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>What's the weather like?</title>
+  <title>Weather App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
   <style>
     body {
@@ -62,7 +62,7 @@
     <div class="hero-body">
       <div class="container has-text-centered">
         <h1 class="title is-2 has-text-white">
-          What's the weather like?
+          Search Weather Now
         </h1>
       </div>
     </div>
@@ -80,7 +80,7 @@
               </div>
               <div class="control">
                 <button class="button is-info">
-                  Search City
+                  Search 
                 </button>
               </div>
             </div>
@@ -107,10 +107,16 @@
                   <p>
                     <span class="title">{{ city_weather.city }}</span>
                     <br>
-                    <span class="subtitle">{{ city_weather.temperature }}° F</span>
+                    <span class="subtitle">{{ city_weather.temperature }}°C</span>
                     <br> {{ city_weather.description }}
                   </p>
                 </div>
+              </div>
+              <div class="media-right">
+                <form method="POST" action="{% url 'delete_city' city_weather.id %}">
+                  {% csrf_token %}
+                  <button class="delete is-large" title="Delete City"></button>
+                </form>
               </div>
             </article>
           </div>
@@ -121,7 +127,7 @@
   </section>
 
   <footer class="footer">
-    <p>☁️ Powered by OpenWeatherMap</p>
+    <p>☁️ Powered by OpenWeatherMap | Made by Bibek Shah</p>
   </footer>
 </body>
 </html>

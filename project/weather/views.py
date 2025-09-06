@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 import requests
 from .models import City
 from .forms import *
@@ -11,7 +11,7 @@ def index(request):
     
     api_key = settings.OPENWEATHER_API_KEY  # from .env
     
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid={}'
     city = 'London'
     
     if request.method == 'POST':
@@ -29,6 +29,7 @@ def index(request):
         r = requests.get(url.format(city, api_key)).json()
     
         city_weather = {
+            'id': city.id,
             'city': city.name,
             'temperature': r['main']['temp'],
             'description': r['weather'][0]['description'],
@@ -41,4 +42,8 @@ def index(request):
     context = {'weather_data': weather_data, 'form': form}
     return render(request, 'weather/index.html', context) #returns the index.html template
 
-    
+
+def delete_city(request, city_id):
+    city = get_object_or_404(City, id=city_id)
+    city.delete()
+    return redirect('index')
