@@ -4,10 +4,14 @@ from .models import City
 from .forms import *
 from dotenv import load_dotenv
 import os
+from django.conf import settings
+
 
 def index(request):
     
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=ce6131ae22cdf56850d8863baac9d400'
+    api_key = settings.OPENWEATHER_API_KEY  # from .env
+    
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
     city = 'London'
     
     if request.method == 'POST':
@@ -22,7 +26,7 @@ def index(request):
     
     for city in cities:
     
-        r = requests.get(url.format(city)).json()
+        r = requests.get(url.format(city, api_key)).json()
     
         city_weather = {
             'city': city.name,
