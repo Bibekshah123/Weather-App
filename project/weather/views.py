@@ -14,9 +14,10 @@ def index(request):
     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid={}'
     city = 'London'
     
-    if request.method == 'POST':
+    if request.method == 'POST' and 'name' in request.POST:
         form = CityForm(request.POST)
-        form.save()
+        if form.is_valid():
+            form.save()
     
     form = CityForm
     
@@ -27,6 +28,11 @@ def index(request):
     for city in cities:
     
         r = requests.get(url.format(city, api_key)).json()
+        
+         #Check if API returned valid data
+        if r.get("cod") != 200:
+            print(f"Error fetching {city.name}: {r.get('message')}")
+            continue  # skip this city if not found or error
     
         city_weather = {
             'id': city.id,
