@@ -15,5 +15,4 @@ A simple weather application built with **Django** that fetches real-time weathe
 
 ---
 
-I'm back it's coding time.....
 
