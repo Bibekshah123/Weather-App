@@ -4,7 +4,7 @@ A simple weather application built with **Django** that fetches real-time weathe
 
 ---
 
-## 🚀 Features
+##  Features
 - Add multiple cities and view their current weather.
 - Displays:
   - Temperature
